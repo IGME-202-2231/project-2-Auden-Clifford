@@ -1,4 +1,4 @@
-# Project _NAME_
+# Project SpinnerScorge_v1.1
 
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
 
@@ -6,42 +6,63 @@ _REPLACE OR REMOVE EVERYTING BETWEEN "\_"_
 
 ### Student Info
 
--   Name: _YOUR NAME_
--   Section: _##_
+-   Name: Auden Clifford
+-   Section: 02
 
 ## Simulation Design
 
-_A brief explanation of your simulation._
+My simulation will be an extention of my Project 1 SHMUP project where the enemies are updated to be autonomous agents with several states to control behavior.
 
 ### Controls
 
--   _List all of the actions the player can have in your simulation_
-    -   _Include how to preform each action ( keyboard, mouse, UI Input )_
-    -   _Include what impact an action has in the simulation ( if is could be unclear )_
+-   Movement
+    -   Up: W
+    -   Down: S
+    -   Left: A
+    -   Right: D
+-   Fire: SPACEBAR
 
-## _Agent 1 Name_
+## Standard Enemy
 
-_A brief explanation of this agent._
+These enemies seek the player and attempt to collide with them. They will also flee from the player if their health is low and seek a healing item, if no healing item exists, they enter a frenzy. In all cases except frenzy, these agents will attempt to avoid colliding with other enemies.
 
-### _State 1 Name_
+This enemy is medium sized and a little slower than the player, however they are the most plentiful of the enemies and can easily overwhelm the player.
 
-**Objective:** _A brief explanation of this state's objective._
+### Fight
+
+**Objective:** Seek the player and collide with them.
+
+#### Steering Behaviors
+
+ 
+- Behaviors
+   - Seek() the player
+   - Flee() obsticles & other enemies
+- Obstacles - Sawblade (a new map hazard; stationary, but deadly)
+- Seperation - Other enemies
+   
+#### State Transistions
+
+This is this agent's initial state, it can be transitioned into when the 
+rotational velocity of this enemy is above 1/3 it's starting value.
+   
+### Heal
+
+**Objective:** The Enemy will flee from the player and seek out a healing item
 
 #### Steering Behaviors
 
 - _List all behaviors used by this state_
-   - _If behavior has input data list it here_
-   - _eg, Flee - nearest Agent2_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+   - Seek() health item
+   - Flee() the player, obsticles, other enemies
+- Obstacles - Sawblade
+- Seperation - Other enemies
    
 #### State Transistions
 
 - _List all the ways this agent can transition to this state_
-   - _eg, When this agent gets within range of Agent2_
-   - _eg, When this agent has reached target of State2_
-   
-### _State 2 Name_
+
+### _State 3 Name_
 
 **Objective:** _A brief explanation of this state's objective._
 
