@@ -36,15 +36,14 @@ This enemy is medium sized and a little slower than the player, however they are
 
  
 - Behaviors
-   - Seek() the player
-   - Flee() obsticles & other enemies
+   - Seek the player
 - Obstacles - Sawblade (a new map hazard; stationary, but deadly)
 - Seperation - Other enemies
    
 #### State Transistions
 
-This is this agent's initial state, it can be transitioned into when the 
-rotational velocity of this enemy is above 1/3 it's starting value.
+- initial state
+- agent rotation speed is above 100rpm
    
 ### Heal
 
@@ -52,61 +51,116 @@ rotational velocity of this enemy is above 1/3 it's starting value.
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-   - Seek() health item
-   - Flee() the player, obsticles, other enemies
+- Behaviors
+   - Seek health item
+   - Flee the player
 - Obstacles - Sawblade
 - Seperation - Other enemies
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- agent rotational velocity is below 100rpm
 
-### _State 3 Name_
+### Frenzy
 
-**Objective:** _A brief explanation of this state's objective._
-
-#### Steering Behaviors
-
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
-   
-#### State Transistions
-
-- _List all the ways this agent can transition to this state_
-
-## _Agent 2 Name_
-
-_A brief explanation of this agent._
-
-### _State 1 Name_
-
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** ram the player, ignore all other stimuli
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Behaviors
+   - Seek the player
+- Obstacles - none
+- Seperation - none
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
-   
-### _State 2 Name_
+- agent rotational velocity is below 100rpm and there are no available healing items
 
-**Objective:** _A brief explanation of this state's objective._
+## Shooter Enemy
+
+Large and tanky, these enemies will also approach the player's position, however, they will attempt to stay at range and fire a spray of bullets at the player
+
+### Seek
+
+**Objective:** Approach the player's position
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Behaviors
+   - Seek the player
+- Obstacles - Sawblade
+- Seperation - Other enemies
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- initial state
+- the player is outside the agent's range and agent's rotational velocity is above 100rpm
+   
+### Shoot
+
+**Objective:** The agent will hang back from the player's position and fire bullets
+
+#### Steering Behaviors
+
+- Behaviors
+   - separate from the player
+- Obstacles - Sawblade
+- Seperation - player, other enemies
+   
+#### State Transistions
+
+- player is within the agent's range and agent's rotational velocity is above 100rpm
+
+### Frenzy
+
+**Objective:** agent will shoot projectiles at a faster pace and attempt to ram the player
+
+#### Steering Behaviors
+
+- Behaviors
+   - seek the player
+- Obstacles - none
+- Seperation - none
+   
+#### State Transistions
+
+- agent's rotational velocity is below 100rpm
+
+## Fast Enemy
+
+Quick and dangerous, these enemies will ram themselves into the player at high speeds as if always in a frenzy.
+
+### Fight
+
+**Objective:** Ram the player
+
+#### Steering Behaviors
+
+- Behaviors
+   - Persue the player
+- Obstacles - Sawblade
+- Seperation - Only other fast enemies
+   
+#### State Transistions
+
+- initial state
+- agent's rotational velocity is above 100rpm
+   
+### Frenzy
+
+**Objective:** Ram the player at all costs (with a higher max speed)
+
+#### Steering Behaviors
+
+- Behaviors
+   - Persue the player
+- Obstacles - none
+- Seperation - none
+   
+#### State Transistions
+
+- agent's rotational velocity is below 100rpm
+
 
 ## Sources
 
@@ -115,9 +169,9 @@ _A brief explanation of this agent._
 
 ## Make it Your Own
 
-- _List out what you added to your game to make it different for you_
-- _If you will add more agents or states make sure to list here and add it to the documention above_
-- _If you will add your own assets make sure to list it here and add it to the Sources section
+- This simulation is also a SHMUP, it extends the previous project and allows the user to control a player character which fights against the agents
+- added one extra agent and one extra state to two of the agents
+- all of the assets are my own custom design
 
 ## Known Issues
 
