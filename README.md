@@ -24,9 +24,7 @@ My simulation will be an extention of my Project 1 SHMUP project where the enemi
 
 ## Standard Enemy
 
-These enemies seek the player and attempt to collide with them. They will also flee from the player if their health is low and seek a healing item, if no healing item exists, they enter a frenzy. In all cases except frenzy, these agents will attempt to avoid colliding with other enemies.
-
-This enemy is medium sized and a little slower than the player, however they are the most plentiful of the enemies and can easily overwhelm the player.
+Medium-sized and a little slower than the player, These enemies seek the player and attempt to collide with them. They will also flee from the player if their health is low and seek a healing item, if no healing item exists, they enter a frenzy. In all cases except frenzy, these agents will attempt to avoid colliding with other enemies.
 
 ### Fight
 
