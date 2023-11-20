@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] ObjectInfo objectInfo;
+    
+    //[SerializeField] ObjectInfo objectInfo;
 
     private Vector3 position = Vector3.zero;
     [SerializeField] private Vector3 direction = Vector3.zero;
@@ -40,7 +41,7 @@ public class Bullet : MonoBehaviour
         // Grab the GameObject's starting position
         position = transform.position;
     }
-
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -94,4 +95,5 @@ public class Bullet : MonoBehaviour
 
         Gizmos.color = Color.white;
     }
+    */
 }

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CollisionManager : Singleton<CollisionManager>
 {
-    private List<ObjectInfo> gameObjects = new List<ObjectInfo>();
+    private List<PhysicsObject>physicsObjects = new List<PhysicsObject>();
 
     /// <summary>
     /// Gets a reference to the list of collidable game objects
     /// </summary>
-    public List<ObjectInfo> GameObjects
+    public List<PhysicsObject> PhysicsObjects
     {
-        get { return gameObjects; }
+        get { return physicsObjects; }
     }
 
     // Update is called once per frame
@@ -20,13 +20,13 @@ public class CollisionManager : Singleton<CollisionManager>
         if(GameManager.Instance.currentState == GameState.Gameplay)
         {
             // loop through each item
-            foreach (ObjectInfo collidable in gameObjects)
+            foreach (PhysicsObject collidable in physicsObjects)
             {
                 // before calculating new collisions, clear the old ones
-                collidable.collisions.Clear();
+                collidable.Collisions.Clear();
 
                 // check each item against each other item
-                foreach (ObjectInfo otherCollidable in gameObjects)
+                foreach (PhysicsObject otherCollidable in physicsObjects)
                 {
                     // make sure objects are not checked against themselves
                     if (collidable != otherCollidable)
@@ -34,7 +34,7 @@ public class CollisionManager : Singleton<CollisionManager>
                         if (Vector2.Distance(collidable.Position, otherCollidable.Position) <= collidable.Radius + otherCollidable.Radius)
                         {
                             // if they're colliding, add the collision to the object's collisions list
-                            collidable.collisions.Add(otherCollidable);
+                            collidable.Collisions.Add(otherCollidable);
                         }
                     }
                 }

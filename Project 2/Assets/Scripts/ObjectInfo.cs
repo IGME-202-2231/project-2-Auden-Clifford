@@ -10,6 +10,7 @@ public enum ObjectType
 
 public class ObjectInfo : MonoBehaviour
 {
+    /*
     [SerializeField] private float radius;
     //[SerializeField] private SpriteRenderer sprite;
     [SerializeField] public PhysicsObject physics;
@@ -37,7 +38,7 @@ public class ObjectInfo : MonoBehaviour
     /// </summary>
     public float Mass
     {
-        get { /*return mass;*/ return Mathf.PI * Mathf.Pow(radius, 2); }
+        get {return Mathf.PI * Mathf.Pow(radius, 2); }
     }
 
     /// <summary>
@@ -66,4 +67,5 @@ public class ObjectInfo : MonoBehaviour
             CollisionManager.Instance.GameObjects.Remove(this);
         }
     }
+    */
 }
