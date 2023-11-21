@@ -37,8 +37,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject enemyShooterPrefab;
     [SerializeField] private GameObject enemyFastPrefab;
     
-    private GameObject player;
-    private List<GameObject> enemies = new List<GameObject>();
+    private PhysicsObject player;
+    private List<PhysicsObject> enemies = new List<PhysicsObject>();
 
     // keep track of the game's current state
     public GameState currentState = GameState.Menu;
@@ -53,12 +53,12 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// Gets or sets the game object that the player controls
     /// </summary>
-    public GameObject Player { get { return player; } set { player = value; } }
+    public PhysicsObject Player { get { return player; } set { player = value; } }
 
     /// <summary>
     /// Gets a list of each enemy in the game
     /// </summary>
-    public List<GameObject> Enemies { get { return enemies; } }
+    public List<PhysicsObject> Enemies { get { return enemies; } }
 
     /// <summary>
     /// Gets or sets the player's score this game
@@ -171,7 +171,8 @@ public class GameManager : Singleton<GameManager>
         gameOverPanel.gameObject.SetActive(false);
 
         // instantiate a new player for the scene
-        player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<PhysicsObject>();
+        //print(player.ToString());
 
         // reset game values
         score = 0;
@@ -195,9 +196,9 @@ public class GameManager : Singleton<GameManager>
         gameOverPanel.gameObject.SetActive(true);
 
         // clear any lefover enemies
-        foreach (GameObject enemy in enemies)
+        foreach (PhysicsObject enemy in enemies)
         {
-            Destroy(enemy);
+            Destroy(enemy.gameObject);
         }
     }
 
@@ -216,7 +217,7 @@ public class GameManager : Singleton<GameManager>
                 new Vector3(
                     Gaussian(player.transform.position.x, 20),
                     Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity));
+                    0), Quaternion.identity).GetComponent<PhysicsObject>());
         }
 
         // for every 5 normal enemies that spawn, 1 shooter enemy will spawn
@@ -227,7 +228,7 @@ public class GameManager : Singleton<GameManager>
                 new Vector3(
                     Gaussian(player.transform.position.x, 20),
                     Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity));
+                    0), Quaternion.identity).GetComponent<PhysicsObject>());
         }
 
         // for every 10 normal enemies that spawn, 1 fast enemy will spawn
@@ -238,7 +239,7 @@ public class GameManager : Singleton<GameManager>
                 new Vector3(
                     Gaussian(player.transform.position.x, 20),
                     Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity));
+                    0), Quaternion.identity).GetComponent<PhysicsObject>());
         }
     }
 
@@ -265,11 +266,11 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     private void DrawMarkers()
     {
-        foreach(GameObject enemy in enemies)
+        foreach(PhysicsObject enemy in enemies)
         {
-            if(enemy.GetComponent<EnemyController>().Marker != null)
+            if(enemy.gameObject.GetComponent<Agent>().Marker != null)
             {
-                enemy.GetComponent<EnemyController>().Marker.transform.position = player.transform.position + (enemy.transform.position - player.transform.position).normalized * markerRadius;
+                enemy.gameObject.GetComponent<Agent>().Marker.transform.position = player.Position + (enemy.Position - player.Position).normalized * markerRadius;
             }
         }
     }

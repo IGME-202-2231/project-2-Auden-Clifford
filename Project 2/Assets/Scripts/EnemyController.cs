@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    /*
     [SerializeField] float accelSpeed;
     GameObject player;
     [SerializeField] PhysicsObject physicsMovement;
@@ -72,4 +73,5 @@ public class EnemyController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
+    */
 }

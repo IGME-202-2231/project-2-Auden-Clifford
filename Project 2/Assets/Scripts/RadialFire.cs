@@ -36,7 +36,7 @@ public class RadialFire : MonoBehaviour
 
                 bullet.GetComponent<Bullet>().Direction = new Vector3(Mathf.Cos((Mathf.PI * 2 / 8) * i), Mathf.Sin((Mathf.PI * 2 / 8) * i), 0);
 
-                bullet.GetComponent<Bullet>().Originator = this.GetComponent<ObjectInfo>();
+                bullet.GetComponent<Bullet>().Originator = this.GetComponent<PhysicsObject>();
             }
 
             // restart the timer

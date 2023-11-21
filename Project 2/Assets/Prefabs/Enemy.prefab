@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 854765774800520979}
-  - component: {fileID: 375221785618919771}
-  - component: {fileID: 6188318905891369059}
-  - component: {fileID: 3729130997991142718}
+  - component: {fileID: 8601458251610991998}
+  - component: {fileID: 1294136381405682423}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -33,9 +32,9 @@ Transform:
   m_Children:
   - {fileID: 2134655122719867536}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &375221785618919771
+--- !u!114 &8601458251610991998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,45 +43,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1867222663151715128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a5f74dd99b1bb41a9b9c9226e1fba0, type: 3}
+  m_Script: {fileID: 11500000, guid: 26b5afe409654ac4ea4ff1f578b208c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1.21
-  physics: {fileID: 3729130997991142718}
-  type: 1
---- !u!114 &6188318905891369059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867222663151715128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33d3688624afae7428d7b139b465f35e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accelSpeed: 20
-  physicsMovement: {fileID: 3729130997991142718}
-  score: 100
-  weapon: {fileID: 0}
-  detectionRadius: 0
-  markerPrefab: {fileID: 6873647728514003776, guid: 2431b78d1d1389642a1b7709baf65133, type: 3}
---- !u!114 &3729130997991142718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867222663151715128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7734342a6dda7b04eba43847af44646d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectInfo: {fileID: 375221785618919771}
   sprite: {fileID: 3370165315153456810}
-  angularVelocity: 750
+  angularVelocity: 800
+  radius: 1.2
+  useFriction: 1
+  coefFriction: 5
+--- !u!114 &1294136381405682423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867222663151715128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bf4bc8e4ff1384186293b06fda06e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  physics: {fileID: 8601458251610991998}
+  maxForce: 40
+  cruiseSpeed: 40
+  markerPrefab: {fileID: 6873647728514003776, guid: 2431b78d1d1389642a1b7709baf65133, type: 3}
+  score: 100
 --- !u!1 &3370165315153456810
 GameObject:
   m_ObjectHideFlags: 0

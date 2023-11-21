@@ -6,6 +6,7 @@ public class TargetFire : MonoBehaviour
 {
     [SerializeField] private GameObject ammunition;
     [SerializeField] private GameObject barrelSprite;
+    [SerializeField] private PhysicsObject physics;
 
     private Vector3 direction;
 
@@ -33,8 +34,9 @@ public class TargetFire : MonoBehaviour
         GameObject bullet = Instantiate(ammunition, transform.position, Quaternion.identity);
 
         bullet.GetComponent<Bullet>().Direction = direction;
+        bullet.GetComponent<Bullet>().InitialVelocity = physics.Velocity;
 
         //assign this bullet's originator to this object
-        bullet.GetComponent<Bullet>().Originator = this.GetComponent<ObjectInfo>();
+        bullet.GetComponent<Bullet>().Originator = this.GetComponent<PhysicsObject>();
     }
 }

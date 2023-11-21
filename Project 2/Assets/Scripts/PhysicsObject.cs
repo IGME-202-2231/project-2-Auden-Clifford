@@ -22,7 +22,7 @@ public class PhysicsObject : MonoBehaviour
     [SerializeField] private float coefFriction;
     //[SerializeField] private bool useGravity;
     //[SerializeField] private float gravStrength;
-    [SerializeField] private float cruiseSpeed;
+    //[SerializeField] private float cruiseSpeed;
 
     private List<PhysicsObject> collisions = new List<PhysicsObject>();
 
@@ -41,10 +41,12 @@ public class PhysicsObject : MonoBehaviour
         get { /*return mass;*/ return Mathf.PI * Mathf.Pow(radius, 2); }
     }
 
+    /*
     /// <summary>
     /// Gets the max speed of this object
     /// </summary>
     public float CruiseSpeed { get { return CruiseSpeed; } }
+    */
 
     /// <summary>
     /// Gets the current velocity of this object
@@ -238,7 +240,7 @@ public class PhysicsObject : MonoBehaviour
                 Vector3 TangentVector = new Vector3(differenceVector.y, -differenceVector.x).normalized;
 
                 // apply force to the other object equal to the angular momentum 
-                otherObject.ApplyForce((-TangentVector * angularVelocity) * this.Mass * radius);
+                otherObject.ApplyForce(-TangentVector * angularVelocity  * radius);
 
                 // you do more damage to a spinner based on momentum
                 otherObject.SlowSpin(velocity.magnitude * this.Mass / 20);

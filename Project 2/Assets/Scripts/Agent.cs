@@ -1,15 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
 public abstract class  Agent : MonoBehaviour
 {
     [SerializeField] protected PhysicsObject physics;
     [SerializeField] protected float maxForce;
+    [SerializeField] protected float cruiseSpeed;
 
-    protected float wanderAngle = 0;
-    Vector2 screenMax;
+    protected PhysicsObject player;
+    protected List<PhysicsObject> enemies;
+
+    [SerializeField] private GameObject markerPrefab;
+    private GameObject marker;
+
+    [SerializeField] private int score;
+    
+    /// <summary>
+    /// Gets this Agent's tracking marker
+    /// </summary>
+    public GameObject Marker { get { return marker; } }
+
+    //protected float wanderAngle = 0;
+    //Vector2 screenMax;
 
     // this is the target agent of this agent, regardless
     // of whether the agent is seeking or fleeing
@@ -18,13 +33,23 @@ public abstract class  Agent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        screenMax = new Vector2(Camera.main.orthographicSize * Camera.main.aspect, Camera.main.orthographicSize);
+        marker = Instantiate(markerPrefab);
+
+        // get a reference to the player
+        player = GameManager.Instance.Player;
+
+        // get a reference to all the enemies
+        enemies = GameManager.Instance.Enemies;
+        //screenMax = new Vector2(Camera.main.orthographicSize * Camera.main.aspect, Camera.main.orthographicSize);
     }
 
     // Update is called once per frame
     protected void Update()
     {
-        CalcSteeringForces();
+        if(GameManager.Instance.currentState == GameState.Gameplay)
+        {
+            CalcSteeringForces();
+        }
     }
 
     protected abstract void CalcSteeringForces();
@@ -37,7 +62,7 @@ public abstract class  Agent : MonoBehaviour
     protected Vector3 Seek(Vector3 targetPos)
     {
         // calculate a desired velocity which is the vector from the object to it's target scaled by the max speed
-        Vector3 desiredVelocity = (targetPos - transform.position).normalized * physics.CruiseSpeed;
+        Vector3 desiredVelocity = (targetPos - transform.position).normalized * cruiseSpeed;
 
         // return the force vector required to achive the desired velocity
         return desiredVelocity - physics.Velocity;
@@ -51,12 +76,13 @@ public abstract class  Agent : MonoBehaviour
     protected Vector3 Flee(Vector3 targetPos)
     {
         // calculate a desired velocity which is the vector from the target to this object scaled by the max speed
-        Vector3 desiredVelocity = (transform.position - targetPos).normalized * physics.CruiseSpeed;
+        Vector3 desiredVelocity = (transform.position - targetPos).normalized * cruiseSpeed;
 
         // return the force vector required to achive the desired velocity
         return desiredVelocity - physics.Velocity;
     }
 
+    /*
     protected Vector3 Wander(float wanderRadius, float wanderDistance)
     {
         // choose a distance ahead
@@ -71,7 +97,30 @@ public abstract class  Agent : MonoBehaviour
         // seek the target position
         return Seek(targetPos);
     }
+    */
 
+    private void OnDestroy()
+    {
+        // when an enemy is destroyed, it should be removed from the game manager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Enemies.Remove(physics);
+            Destroy(marker);
+
+            if (GameManager.Instance.currentState == GameState.Gameplay)
+            {
+                GameManager.Instance.Score += score;
+            }
+        }
+
+        if (player != null)
+        {
+            // the player gains rotational velocity equal to half this enemy's score
+            player.SpeedUpSpin(score / 2);
+        }
+    }
+
+    /*
     protected Vector3 StayInBounds(float buffer, float time)
     {
         Vector3 desiredVelocity = Vector3.zero;
@@ -80,7 +129,7 @@ public abstract class  Agent : MonoBehaviour
         if (physics.GetFuturePosition(time).x > screenMax.x - buffer)
         {
             // add a velocity away from the closest point edge with twice the weight of a normal force devided by the distance to the boundry (force will have more weight as it gets closer)
-            desiredVelocity += (transform.position - new Vector3(screenMax.x, transform.position.y)).normalized * physics.CruiseSpeed 
+            desiredVelocity += (transform.position - new Vector3(screenMax.x, transform.position.y)).normalized * cruiseSpeed 
                 / Vector3.Distance(transform.position, new Vector3(screenMax.x, transform.position.y));
 
         }
@@ -88,26 +137,27 @@ public abstract class  Agent : MonoBehaviour
         if (physics.GetFuturePosition(time).y > screenMax.y - buffer)
         {
             // add a velocity away from the closest point edge with twice the weight of a normal force devided by the distance to the boundry (force will have more weight as it gets closer)
-            desiredVelocity += (transform.position - new Vector3(transform.position.x, screenMax.y)).normalized * physics.CruiseSpeed
+            desiredVelocity += (transform.position - new Vector3(transform.position.x, screenMax.y)).normalized * cruiseSpeed
                 / Vector3.Distance(transform.position, new Vector3(transform.position.x, screenMax.y));
         }
         // will future position be inside the left buffer?
         if (physics.GetFuturePosition(time).x < -screenMax.x + buffer)
         {
             // add a velocity away from the closest point edge with twice the weight of a normal force devided by the distance to the boundry (force will have more weight as it gets closer)
-            desiredVelocity += (transform.position - new Vector3(-screenMax.x, transform.position.y)).normalized * physics.CruiseSpeed
+            desiredVelocity += (transform.position - new Vector3(-screenMax.x, transform.position.y)).normalized * cruiseSpeed
                 / Vector3.Distance(transform.position, new Vector3(-screenMax.x, transform.position.y));
         }
         // will future position be inside the right buffer?
         if (physics.GetFuturePosition(time).y < -screenMax.y + buffer)
         {
             // add a velocity away from the closest point edge with twice the weight of a normal force devided by the distance to the boundry (force will have more weight as it gets closer)
-            desiredVelocity += (transform.position - new Vector3(transform.position.x, -screenMax.y)).normalized * physics.CruiseSpeed
+            desiredVelocity += (transform.position - new Vector3(transform.position.x, -screenMax.y)).normalized * cruiseSpeed
                 / Vector3.Distance(transform.position, new Vector3(transform.position.x, -screenMax.y));
         }
 
         // if the bounds are not ncountered, return no force
         return desiredVelocity;
     }
-    
+    */
+
 }

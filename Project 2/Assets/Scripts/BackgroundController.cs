@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-     private GameObject player;
+     private PhysicsObject player;
 
     // this (should) be the accurate height and width of the background panels
     private Vector2 backgroundSize = new Vector2(24.8f, 15.5f);
@@ -21,7 +21,7 @@ public class BackgroundController : MonoBehaviour
         if(GameManager.Instance.currentState == GameState.Gameplay)
         {
             // check if the player has gone beyond the right edge
-            if (player.transform.position.x >= this.transform.position.x + (backgroundSize.x / 2))
+            if (player.Position.x >= this.transform.position.x + (backgroundSize.x / 2))
             {
                 // move the background right by 1 background panel width
                 this.transform.position = new Vector2(
@@ -30,7 +30,7 @@ public class BackgroundController : MonoBehaviour
             }
 
             // check if the player has gone beyond the left edge
-            if (player.transform.position.x <= this.transform.position.x - (backgroundSize.x / 2))
+            if (player.Position.x <= this.transform.position.x - (backgroundSize.x / 2))
             {
                 // move the background left by 1 background panel width
                 this.transform.position = new Vector2(
@@ -39,7 +39,7 @@ public class BackgroundController : MonoBehaviour
             }
 
             // check if the player has gone above the top edge
-            if (player.transform.position.y >= this.transform.position.y + (backgroundSize.y / 2))
+            if (player.Position.y >= this.transform.position.y + (backgroundSize.y / 2))
             {
                 // move the background up by 1 background panel width
                 this.transform.position = new Vector2(
@@ -48,7 +48,7 @@ public class BackgroundController : MonoBehaviour
             }
 
             // check if the player has gone below the bottom edge
-            if (player.transform.position.y <= this.transform.position.y - (backgroundSize.y / 2))
+            if (player.Position.y <= this.transform.position.y - (backgroundSize.y / 2))
             {
                 // move the background down by 1 background panel width
                 this.transform.position = new Vector2(

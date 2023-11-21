@@ -7,20 +7,22 @@ public class Bullet : MonoBehaviour
 {
     
     //[SerializeField] ObjectInfo objectInfo;
+    private List<PhysicsObject> collisions = new List<PhysicsObject>();
 
     private Vector3 position = Vector3.zero;
-    [SerializeField] private Vector3 direction = Vector3.zero;
+    private Vector3 direction = Vector3.zero;
+    private Vector3 initialVelocity = Vector3.zero;
+    [SerializeField] private float radius;
 
-    private float speed = 20;
+    [SerializeField] private float speed = 20;
     [SerializeField] private float damage;
-
     // bullets should be removed after some amount of time
     [SerializeField] private float lifespan = 5;
 
     /// <summary>
     /// Gets or sets the object that shot this bullet
     /// </summary>
-    public ObjectInfo Originator { get; set; }
+    public PhysicsObject Originator { get; set; }
 
     /// <summary>
     /// Gets or sets the direction of movement (normalized)
@@ -35,22 +37,45 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the radius of the bullet
+    /// </summary>
+    public float Radius { get { return radius; } }
+
+    /// <summary>
+    /// Gets the bullet's position
+    /// </summary>
+    public Vector3 Position { get { return position; } }
+
+    /// <summary>
+    /// Equivalent to the velocity of the originator at the time the bullet was fired
+    /// </summary>
+    public Vector3 InitialVelocity { get { return initialVelocity; } set { initialVelocity = value; } }
+
+    /// <summary>
+    /// Gets the list of objects colliding with this bullet
+    /// </summary>
+    public List<PhysicsObject> Collisions { get { return collisions; } }
+
     // Start is called before the first frame update
     void Start()
     {
         // Grab the GameObject's starting position
         position = transform.position;
+        
+        // add to the collision manager
+        CollisionManager.Instance.Bullets.Add(this);
     }
-    /*
+    
     // Update is called once per frame
     void Update()
     {
         if(GameManager.Instance.currentState == GameState.Gameplay)
         {
-            ResolveCollisions(objectInfo.collisions);
+            ResolveCollisions(collisions);
 
             // add caclulated velocity to position
-            position += direction * speed * Time.deltaTime;
+            position += (direction * speed + initialVelocity) * Time.deltaTime;
 
             // update actual position to calculated position
             transform.position = position;
@@ -70,17 +95,17 @@ public class Bullet : MonoBehaviour
     /// Resolves all collisions dretected this frame; ignores the originator and other bullets and dissapears when it hits something else
     /// </summary>
     /// <param name="collisions">A list containing all the collisions detected this frame</param>
-    private void ResolveCollisions(List<ObjectInfo> collisions)
+    private void ResolveCollisions(List<PhysicsObject> collisions)
     {
-        foreach(ObjectInfo otherObject in collisions)
+        foreach(PhysicsObject physicsObject in collisions)
         {
-            if(otherObject != Originator && otherObject.Type != ObjectType.Projectile)
+            if(physicsObject != Originator /*&& otherObject.Type != ObjectType.Projectile*/)
             {
-                Gizmos.color = Color.red;
+                //Gizmos.color = Color.red;
 
-                otherObject.physics.SlowSpin(damage);
+                physicsObject.SlowSpin(damage);
 
-                // bullets should be destroyed when the reach a target
+                // bullets should be destroyed when they reach a target
                 Destroy(gameObject);
             }
         }
@@ -88,12 +113,12 @@ public class Bullet : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, objectInfo.Radius);
+        Gizmos.DrawWireSphere(transform.position, radius);
 
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + direction);
 
         Gizmos.color = Color.white;
     }
-    */
+    
 }

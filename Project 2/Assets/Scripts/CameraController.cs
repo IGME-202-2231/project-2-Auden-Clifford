@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private GameObject player;
+    private PhysicsObject player;
 
     private void Start()
     {
@@ -24,8 +24,8 @@ public class CameraController : MonoBehaviour
         {
             // update ONLY the camera's X and Y to the player's position
             this.transform.position = new Vector3(
-                    player.transform.position.x,
-                    player.transform.position.y,
+                    player.Position.x,
+                    player.Position.y,
                     this.transform.position.z); // preserve the z value
         }
     }
