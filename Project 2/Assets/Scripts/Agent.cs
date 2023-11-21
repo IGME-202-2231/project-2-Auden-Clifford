@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
@@ -9,6 +10,7 @@ public abstract class  Agent : MonoBehaviour
     [SerializeField] protected PhysicsObject physics;
     [SerializeField] protected float maxForce;
     [SerializeField] protected float cruiseSpeed;
+    [SerializeField] protected float separationDistance;
 
     protected PhysicsObject player;
     protected List<PhysicsObject> enemies;
@@ -80,6 +82,35 @@ public abstract class  Agent : MonoBehaviour
 
         // return the force vector required to achive the desired velocity
         return desiredVelocity - physics.Velocity;
+    }
+
+    /// <summary>
+    /// Calculates a steering force which keeps this agent separated from other given objects
+    /// </summary>
+    /// <param name="others">list of other objects to separate from</param>
+    /// <returns>a separating steering force vector</returns>
+    protected Vector3 Separate(List<PhysicsObject> others)
+    {
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+
+        foreach (PhysicsObject other in others)
+        {
+            // check for agents within the separation distance and ensure agent does not attempt to separate from itself
+            if(other != this.physics && Vector3.Distance(other.Position, this.physics.Position) < separationDistance)
+            {
+                sum += Flee(other.Position) / Vector3.Distance(other.Position, this.physics.Position); // separation force is greater if they are closer
+                count++;
+            }
+        }
+
+        // ensure there was at least one separation attempt
+        if(count > 0)
+        {
+            sum /= count;
+        }
+
+        return sum;
     }
 
     /*
@@ -160,4 +191,8 @@ public abstract class  Agent : MonoBehaviour
     }
     */
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, separationDistance);
+    }
 }

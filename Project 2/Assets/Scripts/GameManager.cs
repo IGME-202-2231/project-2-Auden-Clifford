@@ -209,7 +209,7 @@ public class GameManager : Singleton<GameManager>
     private void SpawnEnemies(int baseNumber)
     {
         int numEnemies = Random.Range(baseNumber, baseNumber + 3);
-
+        
         for(int i = 0; i < numEnemies; i++)
         {
             enemies.Add(Instantiate(
@@ -219,6 +219,14 @@ public class GameManager : Singleton<GameManager>
                     Gaussian(player.transform.position.y, 20),
                     0), Quaternion.identity).GetComponent<PhysicsObject>());
         }
+        
+        // test, always add 1
+        enemies.Add(Instantiate(
+                enemyShooterPrefab,
+                new Vector3(
+                    Gaussian(player.transform.position.x, 20),
+                    Gaussian(player.transform.position.y, 20),
+                    0), Quaternion.identity).GetComponent<PhysicsObject>());
 
         // for every 5 normal enemies that spawn, 1 shooter enemy will spawn
         for (int i = 0; i < numEnemies / 5; i++) 

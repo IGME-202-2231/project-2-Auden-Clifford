@@ -7,13 +7,13 @@ public class RadialFire : MonoBehaviour
     [SerializeField] GameObject ammunition;
 
     // set up a timer and a default value for that timer
-    [SerializeField] private float fireTime = 2; // 2 sec shoot delay
+    //[SerializeField] private float fireTime = 2; // 2 sec shoot delay
     private float fireTimer;
 
     // Start is called before the first frame update
     void Start()
     {
-        fireTimer = fireTime;
+        fireTimer = 0;
     }
 
     // Update is called once per frame
@@ -22,10 +22,12 @@ public class RadialFire : MonoBehaviour
         fireTimer -= Time.deltaTime;
     }
 
+
     /// <summary>
-    /// Fires a spread of 8 bullets out in a circle on a 2 second delay
+    /// Fires a spread of 8 bullets out in a circle on a given delay
     /// </summary>
-    internal void Fire()
+    /// <param name="time">delay between shots</param>
+    internal void Fire(float time)
     {
         if(fireTimer < 0)
         {
@@ -35,12 +37,13 @@ public class RadialFire : MonoBehaviour
                 GameObject bullet = Instantiate(ammunition, transform.position, Quaternion.identity);
 
                 bullet.GetComponent<Bullet>().Direction = new Vector3(Mathf.Cos((Mathf.PI * 2 / 8) * i), Mathf.Sin((Mathf.PI * 2 / 8) * i), 0);
+                bullet.GetComponent<Bullet>().InitialVelocity = this.GetComponent<PhysicsObject>().Velocity;
 
                 bullet.GetComponent<Bullet>().Originator = this.GetComponent<PhysicsObject>();
             }
 
-            // restart the timer
-            fireTimer = fireTime;
+            // restart the timer with entered time
+            fireTimer = time;
         }
     }
 }
