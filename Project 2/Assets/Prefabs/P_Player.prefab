@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5897064906358189134}
   - component: {fileID: 8863745010310295892}
   m_Layer: 0
-  m_Name: Player
+  m_Name: P_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31b7a9013eb99f1488c0f5396cb0f9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammunition: {fileID: 5643348901217638522, guid: e8cee8452a6c3fb4fbe5b75d7df5c50e, type: 3}
+  ammunition: {fileID: 3690766181867182435, guid: 4d83a6fc9c6d613428bb97f8f32cb07c, type: 3}
   barrelSprite: {fileID: 9171896842520193431}
   physics: {fileID: 8863745010310295892}
 --- !u!114 &8863745010310295892

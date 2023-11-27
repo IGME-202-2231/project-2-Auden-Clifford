@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
 
     private Vector3 position = Vector3.zero;
     private Vector3 direction = Vector3.zero;
-    private Vector3 initialVelocity = Vector3.zero;
+    //private Vector3 initialVelocity = Vector3.zero;
     [SerializeField] private float radius;
 
     [SerializeField] private float speed = 20;
@@ -50,7 +50,7 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// Equivalent to the velocity of the originator at the time the bullet was fired
     /// </summary>
-    public Vector3 InitialVelocity { get { return initialVelocity; } set { initialVelocity = value; } }
+    //public Vector3 InitialVelocity { get { return initialVelocity; } set { initialVelocity = value; } }
 
     /// <summary>
     /// Gets the list of objects colliding with this bullet
@@ -75,10 +75,12 @@ public class Bullet : MonoBehaviour
             ResolveCollisions(collisions);
 
             // add caclulated velocity to position
-            position += (direction * speed + initialVelocity) * Time.deltaTime;
+            position += (direction * speed /*+ initialVelocity*/) * Time.deltaTime;
 
             // update actual position to calculated position
             transform.position = position;
+
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
             // count down the seconds since the object was created
             lifespan -= Time.deltaTime;

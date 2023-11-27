@@ -37,7 +37,7 @@ public class RadialFire : MonoBehaviour
                 GameObject bullet = Instantiate(ammunition, transform.position, Quaternion.identity);
 
                 bullet.GetComponent<Bullet>().Direction = new Vector3(Mathf.Cos((Mathf.PI * 2 / 8) * i), Mathf.Sin((Mathf.PI * 2 / 8) * i), 0);
-                bullet.GetComponent<Bullet>().InitialVelocity = this.GetComponent<PhysicsObject>().Velocity;
+                //bullet.GetComponent<Bullet>().InitialVelocity = this.GetComponent<PhysicsObject>().Velocity;
 
                 bullet.GetComponent<Bullet>().Originator = this.GetComponent<PhysicsObject>();
             }

@@ -34,7 +34,7 @@ public class TargetFire : MonoBehaviour
         GameObject bullet = Instantiate(ammunition, transform.position, Quaternion.identity);
 
         bullet.GetComponent<Bullet>().Direction = direction;
-        bullet.GetComponent<Bullet>().InitialVelocity = physics.Velocity;
+        //bullet.GetComponent<Bullet>().InitialVelocity = physics.Velocity;
 
         //assign this bullet's originator to this object
         bullet.GetComponent<Bullet>().Originator = this.GetComponent<PhysicsObject>();

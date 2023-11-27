@@ -12,6 +12,7 @@ public enum StandardEnemyState
 public class StandardEnemy : Agent
 {
     [SerializeField] GameObject frenzyDecal;
+    [SerializeField] float frenzyHealth;
 
     private StandardEnemyState currentState = StandardEnemyState.Fight;
 
@@ -33,7 +34,7 @@ public class StandardEnemy : Agent
                 physics.ApplyForce(cumulativeForce);
 
                 // transition to ANGER state
-                if(physics.AngularVelocity < 100)
+                if(physics.AngularVelocity < frenzyHealth)
                 {
                     currentState = StandardEnemyState.Frenzy;
                 }

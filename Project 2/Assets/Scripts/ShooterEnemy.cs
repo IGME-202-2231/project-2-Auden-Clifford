@@ -12,6 +12,7 @@ public enum ShooterEnemyStates
 public class ShooterEnemy : Agent
 {
     [SerializeField] GameObject frenzyDecal;
+    [SerializeField] float frenzyHealth;
     [SerializeField] RadialFire weapon;
 
     [SerializeField] float shootDelay;
@@ -35,7 +36,7 @@ public class ShooterEnemy : Agent
                 physics.ApplyForce(cumulativeForce);
 
                 // if low health transition to ANGER
-                if(physics.AngularVelocity < 100)
+                if(physics.AngularVelocity < frenzyHealth)
                 {
                     currentState = ShooterEnemyStates.Frenzy;
                 }

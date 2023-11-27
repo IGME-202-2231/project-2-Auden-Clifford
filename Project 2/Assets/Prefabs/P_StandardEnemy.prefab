@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8601458251610991998}
   - component: {fileID: 1294136381405682423}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: P_StandardEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,6 +71,7 @@ MonoBehaviour:
   markerPrefab: {fileID: 6873647728514003776, guid: 2431b78d1d1389642a1b7709baf65133, type: 3}
   score: 100
   frenzyDecal: {fileID: 1216136585810667533}
+  frenzyHealth: 200
 --- !u!1 &3370165315153456810
 GameObject:
   m_ObjectHideFlags: 0
