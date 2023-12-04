@@ -68,6 +68,11 @@ MonoBehaviour:
   maxForce: 60
   cruiseSpeed: 40
   separationDistance: 5
+  avoidTime: 0.5
+  fleeWeight: 50
+  seekWeight: 1
+  separationWeight: 20
+  avoidWeight: 50
   markerPrefab: {fileID: 6873647728514003776, guid: 2431b78d1d1389642a1b7709baf65133, type: 3}
   score: 100
   frenzyDecal: {fileID: 1216136585810667533}

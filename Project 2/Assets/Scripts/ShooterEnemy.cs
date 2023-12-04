@@ -29,7 +29,8 @@ public class ShooterEnemy : Agent
                 frenzyDecal.SetActive(false);
                 cumulativeForce = Vector3.zero;
                 cumulativeForce += Seek(player.Position);
-                cumulativeForce += Separate(GameManager.Instance.Enemies) * 20 /*weight*/;
+                cumulativeForce += Separate(GameManager.Instance.Enemies);
+                cumulativeForce += AvoidObstacles();
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 
@@ -51,9 +52,10 @@ public class ShooterEnemy : Agent
             case ShooterEnemyStates.Shoot:
                 frenzyDecal.SetActive(false);
                 cumulativeForce = Vector3.zero;
-                cumulativeForce += Separate(GameManager.Instance.Enemies) * 20 /*weight*/;
+                cumulativeForce += Separate(GameManager.Instance.Enemies);
                 /*cumulativeForce += Separate(new List<PhysicsObject> { player }) * 50;*/ // separate extra hard from the player
-                cumulativeForce += Flee(player.Position) * 50;
+                cumulativeForce += Flee(player.Position);
+                cumulativeForce += AvoidObstacles();
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 

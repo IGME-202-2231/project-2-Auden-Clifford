@@ -243,7 +243,7 @@ public class PhysicsObject : MonoBehaviour
                 otherObject.ApplyForce(-TangentVector * angularVelocity  * radius);
 
                 // you do more damage to a spinner based on momentum
-                otherObject.SlowSpin(velocity.magnitude * this.Mass / 20);
+                otherObject.SlowSpin(((this.velocity.magnitude * this.Mass) + (this.angularVelocity * this.Mass)) / 5000);
             //}
         }
     }

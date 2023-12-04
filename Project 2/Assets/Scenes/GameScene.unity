@@ -4264,9 +4264,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3000015376160932782, guid: e08223bf16fe71847bbf4a6b8523093d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3492093748614875391, guid: e08223bf16fe71847bbf4a6b8523093d, type: 3}
       propertyPath: orthographic size
-      value: 8
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 9009936612832151799, guid: e08223bf16fe71847bbf4a6b8523093d, type: 3}
       propertyPath: player

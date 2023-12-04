@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
     
     private PhysicsObject player;
     private List<PhysicsObject> enemies = new List<PhysicsObject>();
-    private List<Obstacle> obstacles = new List<Obstacle>();
+    private List<PhysicsObject> obstacles = new List<PhysicsObject>();
 
     // keep track of the game's current state
     public GameState currentState = GameState.Menu;
@@ -67,7 +67,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// Gets a list of each obstacle in the game
     /// </summary>
-    public List<Obstacle> Obstacles { get { return obstacles; } }
+    public List<PhysicsObject> Obstacles { get { return obstacles; } }
 
     /// <summary>
     /// Gets or sets the player's score this game
@@ -210,6 +210,12 @@ public class GameManager : Singleton<GameManager>
         {
             Destroy(enemy.gameObject);
         }
+
+        // clear any lefover obstacles
+        foreach (PhysicsObject obstacle in obstacles)
+        {
+            Destroy(obstacle.gameObject);
+        }
     }
 
     /// <summary>
@@ -265,7 +271,7 @@ public class GameManager : Singleton<GameManager>
             obstacles.Add(Instantiate(
                 obstaclePrefab,
                 GetRandomPosition(20),
-                Quaternion.identity).GetComponent<Obstacle>());
+                Quaternion.identity).GetComponent<PhysicsObject>());
         }
     }
 

@@ -5,13 +5,21 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
-public abstract class  Agent : MonoBehaviour
+public abstract class Agent : MonoBehaviour
 {
     [SerializeField] protected PhysicsObject physics;
     [SerializeField] protected float maxForce;
     [SerializeField] protected float cruiseSpeed;
     [SerializeField] protected float separationDistance;
+
     [SerializeField] protected float avoidTime;
+
+    // weights
+    [SerializeField] protected float fleeWeight;
+    [SerializeField] protected float seekWeight;
+    [SerializeField] protected float separationWeight;
+    [SerializeField] protected float avoidWeight;
+    //[SerializeField] protected float persueWeight;
 
     protected PhysicsObject player;
     protected List<PhysicsObject> enemies;
@@ -82,7 +90,7 @@ public abstract class  Agent : MonoBehaviour
         Vector3 desiredVelocity = (transform.position - targetPos).normalized * cruiseSpeed;
 
         // return the force vector required to achive the desired velocity
-        return desiredVelocity - physics.Velocity;
+        return (desiredVelocity - physics.Velocity) * fleeWeight;
     }
 
     /// <summary>
@@ -111,7 +119,7 @@ public abstract class  Agent : MonoBehaviour
             sum /= count;
         }
 
-        return sum;
+        return sum * separationWeight;
     }
 
     protected Vector3 AvoidObstacles()
@@ -120,7 +128,7 @@ public abstract class  Agent : MonoBehaviour
 
         List <Vector3> foundObstacles = new List<Vector3>();
 
-        foreach (Obstacle obstacle in GameManager.Instance.Obstacles)
+        foreach (PhysicsObject obstacle in GameManager.Instance.Obstacles)
         {
             Vector3 agentToObstacle = obstacle.transform.position - transform.position;
             float rightDot = 0, forwardDot = 0;
@@ -141,7 +149,7 @@ public abstract class  Agent : MonoBehaviour
                     Vector3 steeringForce = transform.right * (forwardDot / dist) * cruiseSpeed;
 
                     // is the obstacle witin the box width?
-                    if (Mathf.Abs(rightDot) <= physics.Radius + obstacle.Radius)
+                    if (Mathf.Abs(rightDot) <= physics.Radius + separationDistance + obstacle.Radius)
                     {
                         foundObstacles.Add(obstacle.transform.position);
 
@@ -160,7 +168,7 @@ public abstract class  Agent : MonoBehaviour
             }
         }
 
-        return totalForce;
+        return totalForce * avoidWeight;
     }
 
     /*

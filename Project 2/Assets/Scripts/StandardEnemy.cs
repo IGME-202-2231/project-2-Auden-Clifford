@@ -27,7 +27,8 @@ public class StandardEnemy : Agent
 
                 cumulativeForce = Vector3.zero;
                 cumulativeForce += Seek(player.Position);
-                cumulativeForce += Separate(GameManager.Instance.Enemies) * 20 /*weight*/;
+                cumulativeForce += Separate(GameManager.Instance.Enemies);
+                cumulativeForce += AvoidObstacles();
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 
