@@ -11,6 +11,7 @@ public abstract class  Agent : MonoBehaviour
     [SerializeField] protected float maxForce;
     [SerializeField] protected float cruiseSpeed;
     [SerializeField] protected float separationDistance;
+    [SerializeField] protected float avoidTime;
 
     protected PhysicsObject player;
     protected List<PhysicsObject> enemies;
@@ -111,6 +112,55 @@ public abstract class  Agent : MonoBehaviour
         }
 
         return sum;
+    }
+
+    protected Vector3 AvoidObstacles()
+    {
+        Vector3 totalForce = Vector3.zero;
+
+        List <Vector3> foundObstacles = new List<Vector3>();
+
+        foreach (Obstacle obstacle in GameManager.Instance.Obstacles)
+        {
+            Vector3 agentToObstacle = obstacle.transform.position - transform.position;
+            float rightDot = 0, forwardDot = 0;
+
+            forwardDot = Vector3.Dot(physics.Direction, agentToObstacle);
+
+            // if in front of me
+            if (forwardDot >= -obstacle.Radius)
+            {
+                Vector3 futurePos = physics.GetFuturePosition(avoidTime);
+                float dist = Vector3.Distance(transform.position, futurePos) + physics.Radius;
+
+                // within box in front of me
+                if (forwardDot <= dist + obstacle.Radius)
+                {
+                    rightDot = Vector3.Dot(transform.right, agentToObstacle);
+
+                    Vector3 steeringForce = transform.right * (forwardDot / dist) * cruiseSpeed;
+
+                    // is the obstacle witin the box width?
+                    if (Mathf.Abs(rightDot) <= physics.Radius + obstacle.Radius)
+                    {
+                        foundObstacles.Add(obstacle.transform.position);
+
+                        // if left steer right
+                        if (rightDot < 0)
+                        {
+                            totalForce += steeringForce;
+                        }
+                        // if right steer left
+                        else
+                        {
+                            totalForce += -steeringForce;
+                        }
+                    }
+                }
+            }
+        }
+
+        return totalForce;
     }
 
     /*

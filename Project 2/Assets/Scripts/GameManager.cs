@@ -36,9 +36,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject enemyStandardPrefab;
     [SerializeField] private GameObject enemyShooterPrefab;
     [SerializeField] private GameObject enemyFastPrefab;
+    [SerializeField] private GameObject obstaclePrefab;
+
+    [SerializeField] private float playerSafeRadius;
     
     private PhysicsObject player;
     private List<PhysicsObject> enemies = new List<PhysicsObject>();
+    private List<Obstacle> obstacles = new List<Obstacle>();
 
     // keep track of the game's current state
     public GameState currentState = GameState.Menu;
@@ -59,6 +63,11 @@ public class GameManager : Singleton<GameManager>
     /// Gets a list of each enemy in the game
     /// </summary>
     public List<PhysicsObject> Enemies { get { return enemies; } }
+
+    /// <summary>
+    /// Gets a list of each obstacle in the game
+    /// </summary>
+    public List<Obstacle> Obstacles { get { return obstacles; } }
 
     /// <summary>
     /// Gets or sets the player's score this game
@@ -115,6 +124,7 @@ public class GameManager : Singleton<GameManager>
 
                     round++;
                     SpawnEnemies(round);
+
                 }
 
                 // keep track of the time this game has lasted
@@ -181,7 +191,7 @@ public class GameManager : Singleton<GameManager>
 
         // spawn new enemies
         SpawnEnemies(round);
-
+        SpawnObstacles();
         currentState = GameState.Gameplay;
     }
 
@@ -214,29 +224,23 @@ public class GameManager : Singleton<GameManager>
         {
             enemies.Add(Instantiate(
                 enemyStandardPrefab,
-                new Vector3(
-                    Gaussian(player.transform.position.x, 20),
-                    Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity).GetComponent<PhysicsObject>());
+                GetRandomPosition(20), 
+                Quaternion.identity).GetComponent<PhysicsObject>());
         }
         
         // test, always add 1
         enemies.Add(Instantiate(
                 enemyShooterPrefab,
-                new Vector3(
-                    Gaussian(player.transform.position.x, 20),
-                    Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity).GetComponent<PhysicsObject>());
+                GetRandomPosition(20), 
+                Quaternion.identity).GetComponent<PhysicsObject>());
 
         // for every 5 normal enemies that spawn, 1 shooter enemy will spawn
         for (int i = 0; i < numEnemies / 5; i++) 
         {
             enemies.Add(Instantiate(
                 enemyShooterPrefab,
-                new Vector3(
-                    Gaussian(player.transform.position.x, 20),
-                    Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity).GetComponent<PhysicsObject>());
+                GetRandomPosition(20),
+                Quaternion.identity).GetComponent<PhysicsObject>());
         }
 
         // for every 10 normal enemies that spawn, 1 fast enemy will spawn
@@ -244,10 +248,48 @@ public class GameManager : Singleton<GameManager>
         {
             enemies.Add(Instantiate(
                 enemyFastPrefab,
-                new Vector3(
-                    Gaussian(player.transform.position.x, 20),
-                    Gaussian(player.transform.position.y, 20),
-                    0), Quaternion.identity).GetComponent<PhysicsObject>());
+                GetRandomPosition(20),
+                Quaternion.identity).GetComponent<PhysicsObject>());
+        }
+    }
+
+    /// <summary>
+    /// Spawns between 2 and 7 obstacles
+    /// </summary>
+    private void SpawnObstacles()
+    {
+        int numObstacles = Random.Range(2, 7);
+
+        for (int i = 0; i < numObstacles; i++)
+        {
+            obstacles.Add(Instantiate(
+                obstaclePrefab,
+                GetRandomPosition(20),
+                Quaternion.identity).GetComponent<Obstacle>());
+        }
+    }
+
+    /// <summary>
+    /// Gets a random position outside the player's safe radius
+    /// </summary>
+    /// <param name="deviation">Standard deviation from the player's position</param>
+    /// <returns>Validated Vector3 position</returns>
+    private Vector3 GetRandomPosition(float deviation)
+    {
+        Vector3 randomPos = new Vector3(
+                Gaussian(player.transform.position.x, deviation),
+                Gaussian(player.transform.position.y, deviation),
+                0);
+
+        // if the new position is inside the safe radius, recursively generate a new random position
+        if (Vector3.Distance(randomPos, player.transform.position) < playerSafeRadius)
+        {
+            return GetRandomPosition(deviation);
+        }
+        // otherwise return the randomly generated value
+        else
+        {
+            return randomPos;
         }
     }
 
