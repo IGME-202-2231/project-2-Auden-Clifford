@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
@@ -13,13 +14,14 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] protected float separationDistance;
 
     [SerializeField] protected float avoidTime;
+    [SerializeField] protected float pursueTime;
 
     // weights
     [SerializeField] protected float fleeWeight;
     [SerializeField] protected float seekWeight;
     [SerializeField] protected float separationWeight;
     [SerializeField] protected float avoidWeight;
-    //[SerializeField] protected float persueWeight;
+    [SerializeField] protected float pursueWeight;
 
     protected PhysicsObject player;
     protected List<PhysicsObject> enemies;
@@ -28,7 +30,10 @@ public abstract class Agent : MonoBehaviour
     private GameObject marker;
 
     [SerializeField] private int score;
-    
+
+    [SerializeField] protected GameObject frenzyDecal;
+    [SerializeField] protected float frenzyHealth;
+
     /// <summary>
     /// Gets this Agent's tracking marker
     /// </summary>
@@ -90,7 +95,17 @@ public abstract class Agent : MonoBehaviour
         Vector3 desiredVelocity = (transform.position - targetPos).normalized * cruiseSpeed;
 
         // return the force vector required to achive the desired velocity
-        return (desiredVelocity - physics.Velocity) * fleeWeight;
+        return (desiredVelocity - physics.Velocity);
+    }
+
+    /// <summary>
+    /// Gets a target's future position and seeks it
+    /// </summary>
+    /// <param name="target">Target object</param>
+    /// <returns>Steering force which seeks an object's future position</returns>
+    protected Vector3 Pursue(PhysicsObject target)
+    {
+        return Seek(target.GetFuturePosition(pursueTime));
     }
 
     /// <summary>
@@ -119,7 +134,7 @@ public abstract class Agent : MonoBehaviour
             sum /= count;
         }
 
-        return sum * separationWeight;
+        return sum;
     }
 
     protected Vector3 AvoidObstacles()
@@ -168,7 +183,7 @@ public abstract class Agent : MonoBehaviour
             }
         }
 
-        return totalForce * avoidWeight;
+        return totalForce;
     }
 
     /*

@@ -41,16 +41,16 @@ Medium-sized and a little slower than the player, These enemies seek the player 
 #### State Transistions
 
 - initial state
-- agent rotation speed is above 100rpm
+- agent rotation speed is above 200rpm
    
 ### Heal
 
-**Objective:** The Enemy will flee from the player and seek out a healing item
+**Objective:** The Enemy will flee from the player and arrive at a healing item
 
 #### Steering Behaviors
 
 - Behaviors
-   - Seek health item
+   - arrive at health item
    - Flee the player
 - Obstacles - Sawblade
 - Seperation - Other enemies
@@ -72,7 +72,7 @@ Medium-sized and a little slower than the player, These enemies seek the player 
    
 #### State Transistions
 
-- agent rotational velocity is below 100rpm and there are no available healing items
+- agent rotational velocity is below 200rpm and there are no available healing items
 
 ## Shooter Enemy
 
@@ -92,7 +92,7 @@ Large and tanky, these enemies will also approach the player's position, however
 #### State Transistions
 
 - initial state
-- the player is outside the agent's range and agent's rotational velocity is above 100rpm
+- the player is outside the agent's range and agent's rotational velocity is above 300rpm
    
 ### Shoot
 
@@ -101,13 +101,13 @@ Large and tanky, these enemies will also approach the player's position, however
 #### Steering Behaviors
 
 - Behaviors
-   - separate from the player
+   - flee from the player
 - Obstacles - Sawblade
-- Seperation - player, other enemies
+- Seperation other enemies
    
 #### State Transistions
 
-- player is within the agent's range and agent's rotational velocity is above 100rpm
+- player is within the agent's range and agent's rotational velocity is above 300rpm
 
 ### Frenzy
 
@@ -122,7 +122,7 @@ Large and tanky, these enemies will also approach the player's position, however
    
 #### State Transistions
 
-- agent's rotational velocity is below 100rpm
+- agent's rotational velocity is below 300rpm
 
 ## Fast Enemy
 
@@ -142,7 +142,7 @@ Quick and dangerous, these enemies will ram themselves into the player at high s
 #### State Transistions
 
 - initial state
-- agent's rotational velocity is above 100rpm
+- agent's rotational velocity is above 600rpm
    
 ### Frenzy
 
@@ -157,13 +157,12 @@ Quick and dangerous, these enemies will ram themselves into the player at high s
    
 #### State Transistions
 
-- agent's rotational velocity is below 100rpm
+- agent's rotational velocity is below 600rpm
 
 
 ## Sources
 
--   _List all project sources here –models, textures, sound clips, assets, etc._
--   _If an asset is from the Unity store, include a link to the page and the author’s name_
+- all graphics and sprites are custom made.
 
 ## Make it Your Own
 
@@ -173,9 +172,11 @@ Quick and dangerous, these enemies will ram themselves into the player at high s
 
 ## Known Issues
 
-_List any errors, lack of error checking, or specific information that I need to know to run your program_
+- agents sometimes get stuck on obstacles.
+- fast enemy's persuit sometimes leads it to sit is a spot directly in front of the player when the player is moving particularly fast
 
 ### Requirements not completed
 
-_If you did not complete a project requirement, notate that here_
+- missing 2 steering force for agents to follow.
+- MISSING FROM PLAN (but not required): I didn't end up implementing the healing items or healing state for the standard enemy, but the standard enemy still has the required number of states.
 

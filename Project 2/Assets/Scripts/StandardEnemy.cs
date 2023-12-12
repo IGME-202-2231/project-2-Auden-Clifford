@@ -11,9 +11,6 @@ public enum StandardEnemyState
 
 public class StandardEnemy : Agent
 {
-    [SerializeField] GameObject frenzyDecal;
-    [SerializeField] float frenzyHealth;
-
     private StandardEnemyState currentState = StandardEnemyState.Fight;
 
     protected override void CalcSteeringForces()
@@ -26,9 +23,9 @@ public class StandardEnemy : Agent
                 frenzyDecal.SetActive(false);
 
                 cumulativeForce = Vector3.zero;
-                cumulativeForce += Seek(player.Position);
-                cumulativeForce += Separate(GameManager.Instance.Enemies);
-                cumulativeForce += AvoidObstacles();
+                cumulativeForce += Seek(player.Position) * seekWeight;
+                cumulativeForce += Separate(GameManager.Instance.Enemies) * separationWeight;
+                cumulativeForce += AvoidObstacles() * avoidWeight;
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 
@@ -48,7 +45,7 @@ public class StandardEnemy : Agent
             case StandardEnemyState.Frenzy:
                 frenzyDecal.SetActive(true);
                 cumulativeForce = Vector3.zero;
-                cumulativeForce += Seek(player.Position) * 2; // seek extra hard
+                cumulativeForce += Seek(player.Position) * seekWeight * 2; // seek extra hard
 
                 // no separation while ANGRY
                 physics.ApplyForce(cumulativeForce);

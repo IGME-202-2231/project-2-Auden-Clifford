@@ -233,12 +233,6 @@ public class GameManager : Singleton<GameManager>
                 GetRandomPosition(20), 
                 Quaternion.identity).GetComponent<PhysicsObject>());
         }
-        
-        // test, always add 1
-        enemies.Add(Instantiate(
-                enemyShooterPrefab,
-                GetRandomPosition(20), 
-                Quaternion.identity).GetComponent<PhysicsObject>());
 
         // for every 5 normal enemies that spawn, 1 shooter enemy will spawn
         for (int i = 0; i < numEnemies / 5; i++) 

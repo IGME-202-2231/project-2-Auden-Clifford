@@ -11,8 +11,6 @@ public enum ShooterEnemyStates
 
 public class ShooterEnemy : Agent
 {
-    [SerializeField] GameObject frenzyDecal;
-    [SerializeField] float frenzyHealth;
     [SerializeField] RadialFire weapon;
 
     [SerializeField] float shootDelay;
@@ -28,9 +26,9 @@ public class ShooterEnemy : Agent
             case ShooterEnemyStates.Seek:
                 frenzyDecal.SetActive(false);
                 cumulativeForce = Vector3.zero;
-                cumulativeForce += Seek(player.Position);
-                cumulativeForce += Separate(GameManager.Instance.Enemies);
-                cumulativeForce += AvoidObstacles();
+                cumulativeForce += Seek(player.Position) * seekWeight;
+                cumulativeForce += Separate(GameManager.Instance.Enemies) * separationWeight;
+                cumulativeForce += AvoidObstacles() * avoidWeight;
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 
@@ -52,10 +50,10 @@ public class ShooterEnemy : Agent
             case ShooterEnemyStates.Shoot:
                 frenzyDecal.SetActive(false);
                 cumulativeForce = Vector3.zero;
-                cumulativeForce += Separate(GameManager.Instance.Enemies);
+                cumulativeForce += Separate(GameManager.Instance.Enemies) * separationWeight;
                 /*cumulativeForce += Separate(new List<PhysicsObject> { player }) * 50;*/ // separate extra hard from the player
-                cumulativeForce += Flee(player.Position);
-                cumulativeForce += AvoidObstacles();
+                cumulativeForce += Flee(player.Position) * fleeWeight;
+                cumulativeForce += AvoidObstacles() * avoidWeight;
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 
@@ -80,7 +78,7 @@ public class ShooterEnemy : Agent
             case ShooterEnemyStates.Frenzy:
                 frenzyDecal.SetActive(true);
                 cumulativeForce = Vector3.zero;
-                cumulativeForce += Seek(player.Position);
+                cumulativeForce += Seek(player.Position) * seekWeight;
 
                 cumulativeForce = Vector3.ClampMagnitude(cumulativeForce, maxForce);
 
